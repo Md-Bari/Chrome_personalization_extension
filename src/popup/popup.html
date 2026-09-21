@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Mask</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-group">
+        <div class="logo-icon">🔒</div>
+        <div class="logo-text">
+          <h1>Privacy Mask</h1>
+          <span class="version-tag">v1.0</span>
+        </div>
+      </div>
+      <div class="pause-toggle-wrap" title="Pause or resume all masks">
+        <label class="switch">
+          <input type="checkbox" id="pause-toggle" aria-label="Toggle pause masking">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Main CTA -->
+    <div class="cta-section">
+      <button id="btn-start-masking" class="btn-primary" aria-label="Start Masking">
+        <span class="btn-icon">🎯</span>
+        <span class="btn-label" id="masking-btn-text">Start Masking</span>
+      </button>
+      <p class="cta-hint" id="cta-hint">Click elements or select text on the page to mask</p>
+    </div>
+
+    <!-- Status Card -->
+    <div class="status-card">
+      <div class="status-row">
+        <span class="status-label">Current Site</span>
+        <span class="status-value site-domain" id="site-domain">Loading...</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Active Masks</span>
+        <span class="badge" id="active-mask-count">0</span>
+      </div>
+      <div class="status-row" id="paused-banner" style="display: none;">
+        <span class="warning-text">⚠️ Masking is currently paused</span>
+      </div>
+    </div>
+
+    <!-- Active Rules List Section -->
+    <div class="rules-section">
+      <div class="section-header">
+        <h2>Active On This Page</h2>
+      </div>
+      <div id="rules-list" class="rules-list">
+        <!-- Injected via JavaScript -->
+        <div class="empty-state" id="empty-state">
+          <p>No masked elements on this page.</p>
+          <span>Click <strong>Start Masking</strong> to protect sensitive data.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <footer class="footer">
+      <button id="btn-manage-masks" class="btn-secondary" aria-label="Manage Masks">
+        <span>⚙️ Manage Masks</span>
+      </button>
+      <button id="btn-open-settings" class="btn-secondary" aria-label="Settings">
+        <span>🔧 Settings</span>
+      </button>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

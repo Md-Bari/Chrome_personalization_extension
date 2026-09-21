@@ -1,0 +1,30 @@
+{
+  "name": "privacy-mask",
+  "version": "1.0.0",
+  "description": "Production-ready Chrome extension to visually mask sensitive information on webpages",
+  "type": "module",
+  "scripts": {
+    "dev": "node build.js --watch",
+    "build": "node build.js",
+    "typecheck": "tsc --noEmit",
+    "test": "node tests/run-tests.js",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "chrome-extension",
+    "manifest-v3",
+    "privacy",
+    "masking",
+    "security"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chrome": "^0.0.308",
+    "@types/node": "^22.13.9",
+    "esbuild": "^0.25.0",
+    "jsdom": "^26.0.0",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  }
+}

@@ -1,0 +1,330 @@
+/* ==========================================================================
+   Privacy Mask - Content Script Styles
+   All rules use !important and high z-index to override site styles.
+   ========================================================================== */
+
+/* ── Selection Mode: cursor on entire page ───────────────────────────────── */
+body.privacy-mask-selecting-mode,
+body.privacy-mask-selecting-mode * {
+  cursor: crosshair !important;
+}
+
+/* ── Hover Box ────────────────────────────────────────────────────────────── */
+#privacy-mask-hover-box {
+  position: absolute !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+  border: 2px solid #ff3b30 !important;
+  background: rgba(255, 59, 48, 0.12) !important;
+  border-radius: 3px !important;
+  z-index: 2147483645 !important;
+  display: none;
+  outline: 1px dashed rgba(255, 59, 48, 0.5) !important;
+  outline-offset: 1px !important;
+  transition: top 0.05s, left 0.05s, width 0.05s, height 0.05s !important;
+}
+
+/* ── Selection Banner ─────────────────────────────────────────────────────── */
+#privacy-mask-selection-banner {
+  position: fixed !important;
+  top: 14px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 2147483647 !important;
+  background: #18191f !important;
+  color: #fff !important;
+  border: 1.5px solid #ff3b30 !important;
+  border-radius: 100px !important;
+  padding: 8px 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 24px rgba(255, 59, 48, 0.35), 0 2px 8px rgba(0,0,0,0.5) !important;
+  animation: pm-slide-in 0.2s ease-out !important;
+  pointer-events: auto !important;
+  user-select: none !important;
+  white-space: nowrap !important;
+}
+
+@keyframes pm-slide-in {
+  from { top: -40px; opacity: 0; }
+  to   { top: 14px;  opacity: 1; }
+}
+
+.privacy-mask-banner-msg {
+  color: #e0e0e0 !important;
+}
+
+.privacy-mask-banner-cancel-btn {
+  background: rgba(255, 59, 48, 0.15) !important;
+  color: #ff5247 !important;
+  border: 1px solid rgba(255, 59, 48, 0.5) !important;
+  border-radius: 100px !important;
+  padding: 4px 12px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: background 0.15s, color 0.15s !important;
+  font-family: inherit !important;
+}
+
+.privacy-mask-banner-cancel-btn:hover {
+  background: #ff3b30 !important;
+  color: #fff !important;
+}
+
+/* ── Confirm Modal ────────────────────────────────────────────────────────── */
+.privacy-mask-confirm-modal {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2147483647 !important;
+  background: #1a1b22 !important;
+  color: #e8e9ef !important;
+  border: 1px solid #2e3040 !important;
+  border-radius: 14px !important;
+  padding: 22px 24px !important;
+  width: 360px !important;
+  max-width: 92vw !important;
+  box-sizing: border-box !important;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.75),
+    0 0 0 1px rgba(255,59,48,0.15) !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  animation: pm-pop-in 0.18s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+
+@keyframes pm-pop-in {
+  from { opacity: 0; transform: translate(-50%, -46%) scale(0.94); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.privacy-mask-modal-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 14px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+}
+
+.privacy-mask-modal-close {
+  margin-left: auto !important;
+  cursor: pointer !important;
+  color: #606472 !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  user-select: none !important;
+  padding: 2px 4px !important;
+  border-radius: 4px !important;
+  transition: color 0.15s !important;
+}
+.privacy-mask-modal-close:hover { color: #ff5247 !important; }
+
+.privacy-mask-modal-preview-label {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #787c8e !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.6px !important;
+  margin-bottom: 6px !important;
+}
+
+.privacy-mask-modal-preview {
+  background: #12131a !important;
+  border: 1px solid #272936 !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  font-family: 'SF Mono', 'Consolas', monospace !important;
+  font-size: 12px !important;
+  color: #5bcffa !important;
+  max-height: 90px !important;
+  overflow-y: auto !important;
+  word-break: break-all !important;
+  margin-bottom: 16px !important;
+  line-height: 1.5 !important;
+}
+
+.privacy-mask-modal-label {
+  display: block !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #8a8fa8 !important;
+  margin-bottom: 6px !important;
+}
+
+.privacy-mask-modal-input {
+  width: 100% !important;
+  background: #12131a !important;
+  border: 1.5px solid #2b2d3d !important;
+  border-radius: 8px !important;
+  color: #e8e9ef !important;
+  padding: 9px 12px !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+  margin-bottom: 14px !important;
+  font-family: inherit !important;
+  outline: none !important;
+  transition: border-color 0.15s !important;
+}
+.privacy-mask-modal-input:focus {
+  border-color: #ff3b30 !important;
+}
+
+.privacy-mask-modal-scope {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  margin-bottom: 18px !important;
+}
+.privacy-mask-modal-scope label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-size: 12px !important;
+  color: #b0b5cb !important;
+  cursor: pointer !important;
+}
+.privacy-mask-modal-scope code {
+  font-family: monospace !important;
+  color: #5bcffa !important;
+  font-size: 11px !important;
+}
+
+.privacy-mask-modal-actions {
+  display: flex !important;
+  gap: 8px !important;
+  margin-top: 4px !important;
+}
+
+.privacy-mask-btn-confirm {
+  flex: 1 !important;
+  background: linear-gradient(135deg, #ff3b30, #d92d22) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  transition: opacity 0.15s !important;
+  box-shadow: 0 3px 12px rgba(255,59,48,0.35) !important;
+}
+.privacy-mask-btn-confirm:hover { opacity: 0.88 !important; }
+
+.privacy-mask-btn-reselect {
+  background: #22242e !important;
+  color: #8a8fa8 !important;
+  border: 1px solid #2e3040 !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  transition: color 0.15s, border-color 0.15s !important;
+}
+.privacy-mask-btn-reselect:hover {
+  color: #e8e9ef !important;
+  border-color: #3e4052 !important;
+}
+
+/* ── Text Mask Wrapper ────────────────────────────────────────────────────── */
+.privacy-mask-text-wrapper {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: #1a1f2e !important;
+  border: 1px solid rgba(255, 59, 48, 0.55) !important;
+  border-radius: 4px !important;
+  padding: 1px 5px 1px 6px !important;
+  margin: 0 1px !important;
+  vertical-align: baseline !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
+  gap: 4px !important;
+}
+
+.privacy-mask-masked-text {
+  display: inline !important;
+  color: #e8e9ef !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.5px !important;
+  user-select: none !important;
+  font-family: 'SF Mono', 'Consolas', monospace, sans-serif !important;
+  font-size: 0.9em !important;
+}
+
+/* Revealed state */
+.privacy-mask-text-wrapper[data-privacy-revealed="true"] .privacy-mask-masked-text {
+  color: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: normal !important;
+  font-family: inherit !important;
+}
+
+.privacy-mask-reveal-btn-inline {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  color: #606472 !important;
+  font-size: 11px !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  opacity: 0.6 !important;
+  transition: opacity 0.15s, color 0.15s !important;
+}
+.privacy-mask-text-wrapper:hover .privacy-mask-reveal-btn-inline {
+  opacity: 1 !important;
+  color: #b0b5cb !important;
+}
+
+/* ── Block Mask (non-text elements) ──────────────────────────────────────── */
+[data-privacy-block-masked="true"] {
+  position: relative !important;
+  overflow: hidden !important;
+}
+[data-privacy-block-masked="true"]::after {
+  content: attr(data-privacy-mask-text) !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: #1a1f2e !important;
+  border: 1px solid rgba(255, 59, 48, 0.5) !important;
+  color: #e8e9ef !important;
+  font-family: 'SF Mono', 'Consolas', monospace !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  user-select: none !important;
+  z-index: 2147483640 !important;
+  border-radius: inherit !important;
+}
+
+/* ── Success Toast ────────────────────────────────────────────────────────── */
+.privacy-mask-toast-success {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483647 !important;
+  background: #10b981 !important;
+  color: #fff !important;
+  padding: 11px 20px !important;
+  border-radius: 10px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4) !important;
+  animation: pm-pop-in 0.2s ease-out !important;
+  pointer-events: none !important;
+}

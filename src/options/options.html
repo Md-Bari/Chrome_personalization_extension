@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Mask - Dashboard & Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🔒</div>
+        <div class="brand-title">
+          <h2>Privacy Mask</h2>
+          <span>Dashboard</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="rules-tab">
+          <span class="nav-icon">📋</span>
+          <span class="nav-text">Mask Rules</span>
+          <span class="nav-badge" id="total-rules-badge">0</span>
+        </button>
+        <button class="nav-item" data-tab="settings-tab">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-text">Settings</span>
+        </button>
+        <button class="nav-item" data-tab="backup-tab">
+          <span class="nav-icon">💾</span>
+          <span class="nav-text">Backup & Sync</span>
+        </button>
+        <button class="nav-item" data-tab="privacy-tab">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-text">Privacy Notice</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="version">Privacy Mask v1.0</span>
+        <span class="local-badge">🔒 100% Local & Offline</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <h1 id="page-title">Mask Rules</h1>
+        <div class="top-actions" id="rules-actions">
+          <input type="text" id="search-input" placeholder="Search domain, selector, or tag..." aria-label="Search rules">
+          <select id="site-filter" aria-label="Filter by site">
+            <option value="all">All Sites</option>
+          </select>
+          <button id="btn-clear-all" class="btn-danger-outline">Clear All</button>
+        </div>
+      </header>
+
+      <!-- TAB 1: Rules List -->
+      <section id="rules-tab" class="tab-content active">
+        <div class="table-container">
+          <table class="rules-table">
+            <thead>
+              <tr>
+                <th>Site & Page</th>
+                <th>Mode</th>
+                <th>Selector / Path</th>
+                <th>Status</th>
+                <th>Mask Text</th>
+                <th>Created</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rules-tbody">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+          <div id="rules-empty-state" class="empty-placeholder" style="display: none;">
+            <div class="empty-icon">📭</div>
+            <h3>No mask rules found</h3>
+            <p>Use the Privacy Mask extension popup on any webpage and click "Start Masking" to create rules.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: Settings -->
+      <section id="settings-tab" class="tab-content">
+        <div class="settings-card">
+          <h2>Masking Preferences</h2>
+          
+          <div class="setting-group">
+            <div class="setting-info">
+              <label for="mask-char-select">Default Mask Text</label>
+              <p>The visual replacement text displayed over masked elements.</p>
+            </div>
+            <div class="setting-control">
+              <select id="mask-char-select">
+                <option value="****">**** (Asterisks)</option>
+                <option value="••••">•••• (Bullets)</option>
+                <option value="████">████ (Block)</option>
+                <option value="HIDDEN">HIDDEN (Text)</option>
+                <option value="custom">Custom...</option>
+              </select>
+              <input type="text" id="custom-mask-input" placeholder="Custom mask text" style="display: none; margin-top: 6px;">
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-info">
+              <label for="reveal-duration-select">Temporary Reveal Duration</label>
+              <p>How long sensitive content remains unmasked when clicking the reveal eye icon.</p>
+            </div>
+            <div class="setting-control">
+              <select id="reveal-duration-select">
+                <option value="3">3 seconds</option>
+                <option value="5">5 seconds (Default)</option>
+                <option value="10">10 seconds</option>
+                <option value="30">30 seconds</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-info">
+              <label for="default-scope-select">Default Rule Scope</label>
+              <p>Whether newly created masks apply to the whole website or only the current page URL.</p>
+            </div>
+            <div class="setting-control">
+              <select id="default-scope-select">
+                <option value="domain">Entire Website (e.g. *.example.com)</option>
+                <option value="page">Current Page URL Only</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-info">
+              <label for="auto-mask-toggle">Auto-Mask on Page Load</label>
+              <p>Automatically search and apply masks immediately when navigating pages.</p>
+            </div>
+            <div class="setting-control">
+              <label class="switch">
+                <input type="checkbox" id="auto-mask-toggle" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button id="btn-save-settings" class="btn-primary-small">Save Preferences</button>
+            <span id="settings-status-msg" class="success-msg" style="display: none;">Saved successfully!</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: Backup & Sync -->
+      <section id="backup-tab" class="tab-content">
+        <div class="settings-card">
+          <h2>Backup & Restore</h2>
+          <p class="section-desc">Export your masking rules to a JSON file to transfer between devices or create a local backup.</p>
+
+          <div class="backup-grid">
+            <div class="backup-box">
+              <h3>Export Rules</h3>
+              <p>Download all your stored privacy rules as a clean JSON backup file.</p>
+              <button id="btn-export-rules" class="btn-secondary-action">Export JSON</button>
+            </div>
+
+            <div class="backup-box">
+              <h3>Import Rules</h3>
+              <p>Restore or merge rules from a previously exported Privacy Mask JSON backup file.</p>
+              <input type="file" id="import-file-input" accept=".json" style="display: none;">
+              <button id="btn-trigger-import" class="btn-secondary-action">Choose JSON File</button>
+              <span id="import-status-msg" class="status-msg"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: Privacy Notice -->
+      <section id="privacy-tab" class="tab-content">
+        <div class="settings-card">
+          <h2>Privacy Guarantee</h2>
+          <div class="privacy-guarantee-list">
+            <div class="guarantee-item">
+              <span class="guarantee-icon">🛡️</span>
+              <div>
+                <strong>Zero External Communications</strong>
+                <p>Privacy Mask does not connect to any servers, backends, or analytics platforms. All computations occur strictly inside your browser sandbox.</p>
+              </div>
+            </div>
+            <div class="guarantee-item">
+              <span class="guarantee-icon">🔐</span>
+              <div>
+                <strong>Web Crypto SHA-256 Fingerprints</strong>
+                <p>Sensitive text content is never stored in plaintext when generating selectors; cryptographic one-way hashes are used locally.</p>
+              </div>
+            </div>
+            <div class="guarantee-item">
+              <span class="guarantee-icon">💾</span>
+              <div>
+                <strong>Local Storage Only</strong>
+                <p>Rules and preferences are stored exclusively inside Chrome's sandboxed local extension storage (<code>chrome.storage.local</code>).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
+

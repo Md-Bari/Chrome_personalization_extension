@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Mask - Interactive Test Bench</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-dim: #94a3b8;
+      --border: #334155;
+      --primary: #38bdf8;
+      --accent: #f43f5e;
+      --success: #10b981;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .header p {
+      color: var(--text-dim);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .label {
+      color: var(--text-dim);
+    }
+    .value {
+      font-weight: 600;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .badge {
+      background-color: var(--primary);
+      color: #0f172a;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .log-box {
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--success);
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .btn {
+      background: var(--primary);
+      color: #0f172a;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Privacy Mask Test Dashboard</h1>
+      <p>Use the Privacy Mask extension to select and mask any of the sensitive data fields below.</p>
+    </header>
+
+    <div class="grid">
+      <!-- Card 1: Compensation & Banking -->
+      <div class="card">
+        <h2>💰 Compensation & Banking</h2>
+        <div class="data-row">
+          <span class="label">Monthly Base Salary:</span>
+          <span class="value" id="salary">$85,000</span>
+        </div>
+        <div class="data-row">
+          <span class="label">Annual Bonus:</span>
+          <span class="value" id="bonus">$24,500</span>
+        </div>
+        <div class="data-row">
+          <span class="label">Account Number:</span>
+          <span class="value" id="bank-acc">4091-8821-9903-1284</span>
+        </div>
+        <div class="data-row">
+          <span class="label">Checking Balance:</span>
+          <span class="value" data-testid="checking-balance">$142,850.25</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Personal Identifiable Information -->
+      <div class="card">
+        <h2>👤 Personal Details (PII)</h2>
+        <div class="data-row">
+          <span class="label">Full Name:</span>
+          <span class="value" class="employee-name">Jane Alexandra Doe</span>
+        </div>
+        <div class="data-row">
+          <span class="label">Work Email:</span>
+          <span class="value email">jane.doe@enterprise-corp.com</span>
+        </div>
+        <div class="data-row">
+          <span class="label">Phone Number:</span>
+          <span class="value" data-testid="phone">+1 (555) 382-9912</span>
+        </div>
+        <div class="data-row">
+          <span class="label">Employee ID:</span>
+          <span class="value badge" id="emp-id">EMP-90821-X</span>
+        </div>
+        <div class="data-row">
+          <span class="label">Residential Address:</span>
+          <span class="value address">742 Evergreen Terrace, Springfield</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Live Mutation Testing -->
+    <div class="card">
+      <h2>⚡ Dynamic DOM Mutation Tester</h2>
+      <p style="font-size: 13px; color: var(--text-dim);">
+        Tests if MutationObserver keeps dynamic updates masked without leaking sensitive values.
+      </p>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button class="btn" id="btn-mutate">Trigger Dynamic Salary Update</button>
+        <button class="btn" id="btn-add-item" style="background: var(--text-dim);">Append Dynamic Element</button>
+      </div>
+      <div id="dynamic-container" style="margin-top: 8px;"></div>
+      <div class="log-box" id="event-log">Ready for test events...</div>
+    </div>
+  </div>
+
+  <script>
+    const logEl = document.getElementById('event-log');
+    function log(msg) {
+      logEl.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>` + logEl.innerHTML;
+    }
+
+    // Dynamic update test after 3 seconds
+    setTimeout(() => {
+      const sal = document.getElementById('salary');
+      if (sal) {
+        sal.textContent = '$90,000';
+        log('Dynamic background update: Salary changed to $90,000');
+      }
+    }, 3000);
+
+    document.getElementById('btn-mutate').addEventListener('click', () => {
+      const sal = document.getElementById('salary');
+      const randomVal = '$' + (Math.floor(Math.random() * 50) + 70) + ',000';
+      sal.textContent = randomVal;
+      log(`Salary manually mutated to ${randomVal}`);
+    });
+
+    document.getElementById('btn-add-item').addEventListener('click', () => {
+      const container = document.getElementById('dynamic-container');
+      const div = document.createElement('div');
+      div.className = 'data-row';
+      div.style.marginTop = '6px';
+      div.innerHTML = `<span class="label">New Wire Transfer:</span> <span class="value" data-testid="wire-val">$${(Math.random()*10000).toFixed(2)}</span>`;
+      container.appendChild(div);
+      log('Appended new sensitive DOM node dynamically');
+    });
+  </script>
+</body>
+</html>
