@@ -74,34 +74,78 @@ privacy-mask/
 
 ---
 
-## 🚀 Installation & Building
+## 🚀 Installation — Visual Guide
 
-### 1. Prerequisites
-- Node.js (v18 or higher recommended)
-- Google Chrome or any Chromium-based browser (Brave, Edge, Opera)
+> **No build needed?** Just grab the `dist/` folder (or the `PrivacyMask-Extension.zip`) and follow these 5 steps.
 
-### 2. Install Dependencies
+---
+
+### Step 1 — Open the Chrome Extensions Page
+
+![Step 1: Open chrome://extensions/](docs/images/step1_open_extensions.jpg)
+
+Open **Google Chrome** and type in the address bar, then press **Enter**:
+```
+chrome://extensions/
+```
+
+---
+
+### Step 2 — Enable Developer Mode
+
+![Step 2: Enable Developer Mode](docs/images/step2_developer_mode.jpg)
+
+Find the **"Developer mode"** toggle in the **top-right corner** of the Extensions page and switch it **ON**.
+
+---
+
+### Step 3 — Click "Load Unpacked"
+
+![Step 3: Click Load Unpacked](docs/images/step3_load_unpacked.jpg)
+
+Three new buttons appear. Click **"Load unpacked"** on the left.
+
+---
+
+### Step 4 — Select the `dist` Folder
+
+![Step 4: Select the dist folder](docs/images/step4_select_folder.jpg)
+
+A file picker opens. Navigate to where you saved/unzipped the extension, select the **`dist`** folder, then click **"Select Folder"**.
+
+> ⚠️ Make sure you select the **`dist`** folder itself — it must contain `manifest.json` directly inside.
+
+---
+
+### Step 5 — Done! ✅
+
+![Step 5: Installation complete](docs/images/step5_success.jpg)
+
+**Privacy Mask** is now installed! The 🔒 lock icon appears in your Chrome toolbar. Click it on any webpage to start masking sensitive data.
+
+---
+
+## 🛠️ Build from Source
+
+### Prerequisites
+- Node.js v18 or higher
+- Google Chrome or any Chromium-based browser (Brave, Edge, Arc)
+
+### Install Dependencies
 ```bash
 npm install
 ```
 
-### 3. Build the Extension
+### Build the Extension
 ```bash
 npm run build
 ```
-This compiles TypeScript files and bundles all assets into the `dist/` folder.
+Compiles TypeScript and bundles all assets into the `dist/` folder.
 
-To run in watch mode during development:
+### Development (watch mode)
 ```bash
 npm run dev
 ```
-
-### 4. Load into Chrome
-1. Open Google Chrome and navigate to `chrome://extensions`.
-2. Toggle **Developer mode** in the top right corner.
-3. Click the **Load unpacked** button.
-4. Select the `dist/` directory inside this project folder.
-5. The **Privacy Mask** icon will appear in your Chrome toolbar!
 
 ---
 
