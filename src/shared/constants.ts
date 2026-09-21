@@ -12,8 +12,8 @@ export const DEFAULT_SETTINGS: MaskSettings = {
 };
 
 export const STORAGE_KEYS = {
-  RULES: 'privacy_mask_rules',
-  SETTINGS: 'privacy_mask_settings',
+  RULES: 'privacy_mask_rules_v3',
+  SETTINGS: 'privacy_mask_settings_v3',
 } as const;
 
 export const DYNAMIC_CLASS_PATTERNS: RegExp[] = [

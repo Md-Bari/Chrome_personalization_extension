@@ -7,7 +7,7 @@ import {
   removeAllMasks,
 } from '../src/content/masking';
 import { MaskRule } from '../src/shared/types';
-import { OVERLAY_ATTR, WRAPPER_ATTR } from '../src/shared/constants';
+import { OVERLAY_ATTR, WRAPPER_ATTR, HOST_ATTR } from '../src/shared/constants';
 
 describe('Masking Engine', () => {
   beforeEach(() => {
@@ -68,12 +68,12 @@ describe('Masking Engine', () => {
     const overlay = document.querySelector(`[${OVERLAY_ATTR}="rule-elem-1"]`);
     expect(overlay).not.toBeNull();
     expect(overlay?.textContent).toContain('****');
-    expect(card.getAttribute(OVERLAY_ATTR)).toBe('rule-elem-1');
+    expect(card.getAttribute(HOST_ATTR)).toBe('rule-elem-1');
 
     // Clean removal
     removeMaskRule('rule-elem-1', document);
     expect(document.querySelector(`[${OVERLAY_ATTR}="rule-elem-1"]`)).toBeNull();
-    expect(card.hasAttribute(OVERLAY_ATTR)).toBe(false);
+    expect(card.hasAttribute(HOST_ATTR)).toBe(false);
   });
 
   it('prevents duplicate overlays when applied multiple times (idempotent)', () => {

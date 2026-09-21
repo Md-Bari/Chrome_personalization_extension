@@ -181,8 +181,8 @@ function renderRules() {
     if (query) {
       const matchHost = rule.hostname.toLowerCase().includes(query);
       const matchPath = (rule.pathname || '').toLowerCase().includes(query);
-      const matchSelector = (rule.selector?.cssSelector || '').toLowerCase().includes(query);
-      const matchTag = (rule.selector?.tagName || '').toLowerCase().includes(query);
+      const matchSelector = ((rule.selector?.cssSelector || (rule as any).cssSelector || (rule as any).originalText || '')).toLowerCase().includes(query);
+      const matchTag = ((rule.selector?.tagName || (rule as any).domPath || '')).toLowerCase().includes(query);
       return matchHost || matchPath || matchSelector || matchTag;
     }
     return true;
@@ -221,8 +221,9 @@ function renderRules() {
     const tdSelector = document.createElement('td');
     const selSnippet = document.createElement('span');
     selSnippet.className = 'selector-snippet';
-    selSnippet.textContent = rule.selector.cssSelector || rule.selector.path || rule.selector.tagName;
-    selSnippet.title = rule.selector.cssSelector || rule.selector.path || '';
+    const selText = rule.selector?.cssSelector || (rule as any).cssSelector || (rule as any).domPath || (rule as any).originalText || rule.selector?.path || rule.selector?.tagName || 'Element';
+    selSnippet.textContent = selText;
+    selSnippet.title = selText;
     tdSelector.appendChild(selSnippet);
 
     // Status

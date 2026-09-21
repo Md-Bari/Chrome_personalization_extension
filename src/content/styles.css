@@ -239,24 +239,25 @@ body.privacy-mask-selecting-mode * {
 .privacy-mask-text-wrapper {
   display: inline-flex !important;
   align-items: center !important;
-  background: #1a1f2e !important;
-  border: 1px solid rgba(255, 59, 48, 0.55) !important;
-  border-radius: 4px !important;
-  padding: 1px 5px 1px 6px !important;
-  margin: 0 1px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
   vertical-align: baseline !important;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
-  gap: 4px !important;
+  box-shadow: none !important;
+  gap: 2px !important;
+  position: relative !important;
 }
 
 .privacy-mask-masked-text {
   display: inline !important;
-  color: #e8e9ef !important;
-  font-weight: 700 !important;
-  letter-spacing: 1.5px !important;
+  color: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: normal !important;
   user-select: none !important;
-  font-family: 'SF Mono', 'Consolas', monospace, sans-serif !important;
-  font-size: 0.9em !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
 }
 
 /* Revealed state */
@@ -265,6 +266,7 @@ body.privacy-mask-selecting-mode * {
   font-weight: inherit !important;
   letter-spacing: normal !important;
   font-family: inherit !important;
+  background: transparent !important;
 }
 
 .privacy-mask-reveal-btn-inline {
@@ -273,18 +275,20 @@ body.privacy-mask-selecting-mode * {
   justify-content: center !important;
   background: transparent !important;
   border: none !important;
-  color: #606472 !important;
+  color: inherit !important;
   font-size: 11px !important;
   cursor: pointer !important;
-  padding: 0 !important;
+  padding: 0 2px !important;
   margin: 0 !important;
   line-height: 1 !important;
-  opacity: 0.6 !important;
-  transition: opacity 0.15s, color 0.15s !important;
+  opacity: 0 !important;
+  transition: opacity 0.15s !important;
 }
 .privacy-mask-text-wrapper:hover .privacy-mask-reveal-btn-inline {
+  opacity: 0.75 !important;
+}
+.privacy-mask-reveal-btn-inline:hover {
   opacity: 1 !important;
-  color: #b0b5cb !important;
 }
 
 /* ── Block Mask (non-text elements) ──────────────────────────────────────── */

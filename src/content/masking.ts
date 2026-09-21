@@ -1,15 +1,15 @@
 /**
  * Privacy Mask - Masking Engine
  *
- * A clean, reliable masking implementation:
- * - Uses CSS `visibility: hidden` + a positioned mask overlay for element masking
- * - Wraps individual text nodes in styled spans for text masking
+ * Reliable masking implementation supporting both text and element mode:
+ * - Uses styled span wrappers for text masking
+ * - Uses overlay elements for element masking
  * - Supports temporary reveal (click 👁)
  * - Stores original text for restoration
  */
 
 import { MaskRule } from '../shared/types';
-import { UI_PREFIX, WRAPPER_ATTR, HOST_ATTR } from '../shared/constants';
+import { UI_PREFIX, WRAPPER_ATTR, HOST_ATTR, OVERLAY_ATTR } from '../shared/constants';
 
 type RevealCallback = (ruleId: string) => void;
 
@@ -18,8 +18,25 @@ const revealTimers = new Map<string, ReturnType<typeof setTimeout>>();
 // ─── Public API ────────────────────────────────────────────────────────────────
 
 /**
+ * Check whether an element or its children are currently masked.
+ */
+export function isElementMasked(element: HTMLElement): boolean {
+  if (!element) return false;
+  if (
+    element.hasAttribute(HOST_ATTR) ||
+    element.hasAttribute(OVERLAY_ATTR) ||
+    element.hasAttribute('data-privacy-masked')
+  ) {
+    return true;
+  }
+  if (element.querySelector(`[${WRAPPER_ATTR}], [${OVERLAY_ATTR}], [${HOST_ATTR}], [data-privacy-masked]`)) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * Apply a mask rule to the given element.
- * Wraps all direct text nodes in mask wrappers.
  */
 export function applyMaskRule(
   element: HTMLElement,
@@ -28,7 +45,11 @@ export function applyMaskRule(
 ): boolean {
   if (!rule.enabled) return false;
 
-  // Check if already masked for this rule
+  if (rule.mode === 'element') {
+    return applyElementMask(element, rule, onReveal);
+  }
+
+  // Text mode
   if (element.hasAttribute(HOST_ATTR) && element.getAttribute(HOST_ATTR) === rule.id) {
     return true;
   }
@@ -52,10 +73,19 @@ export function removeMaskRule(ruleId: string, root: Document | Element = docume
     wrapper.parentNode?.replaceChild(textNode, wrapper);
   });
 
-  // Remove host attributes
-  const hosts = root.querySelectorAll(`[${HOST_ATTR}="${ruleId}"]`);
+  // Remove element overlays
+  const overlays = root.querySelectorAll(`[${OVERLAY_ATTR}="${ruleId}"]`);
+  overlays.forEach((overlay) => {
+    overlay.remove();
+  });
+
+  // Remove host attributes for this rule
+  const hosts = root.querySelectorAll(
+    `[${HOST_ATTR}="${ruleId}"], [${OVERLAY_ATTR}="${ruleId}"]`
+  );
   hosts.forEach((el) => {
     el.removeAttribute(HOST_ATTR);
+    el.removeAttribute(OVERLAY_ATTR);
     el.removeAttribute('data-privacy-masked');
     el.removeAttribute('data-privacy-revealed');
   });
@@ -79,10 +109,20 @@ export function removeAllMasks(root: Document | Element = document): void {
     wrapper.parentNode?.replaceChild(document.createTextNode(original), wrapper);
   });
 
+  // Remove all overlays
+  const overlays = root.querySelectorAll(`.${UI_PREFIX}-element-overlay, [${OVERLAY_ATTR}]`);
+  overlays.forEach((overlay) => {
+    // If it's an overlay element, remove it
+    if (overlay.classList.contains(`${UI_PREFIX}-element-overlay`) || overlay.tagName === 'DIV') {
+      overlay.remove();
+    }
+  });
+
   // Remove all host attributes
-  const hosts = root.querySelectorAll('[data-privacy-masked]');
+  const hosts = root.querySelectorAll(`[${HOST_ATTR}], [${OVERLAY_ATTR}], [data-privacy-masked]`);
   hosts.forEach((el) => {
     el.removeAttribute(HOST_ATTR);
+    el.removeAttribute(OVERLAY_ATTR);
     el.removeAttribute('data-privacy-masked');
     el.removeAttribute('data-privacy-revealed');
   });
@@ -118,11 +158,20 @@ export function temporarilyRevealRule(
     if (maskSpan) maskSpan.textContent = original;
   });
 
+  // Element overlays reveal
+  const overlays = root.querySelectorAll(`.${UI_PREFIX}-element-overlay[${OVERLAY_ATTR}="${ruleId}"]`);
+  overlays.forEach((overlay) => {
+    (overlay as HTMLElement).style.display = 'none';
+  });
+
   const timer = setTimeout(() => {
     wrappers.forEach((wrapper) => {
       (wrapper as HTMLElement).removeAttribute('data-privacy-revealed');
       const maskSpan = wrapper.querySelector(`.${UI_PREFIX}-masked-text`);
       if (maskSpan) maskSpan.textContent = rule.maskText || '████';
+    });
+    overlays.forEach((overlay) => {
+      (overlay as HTMLElement).style.display = '';
     });
     revealTimers.delete(ruleId);
   }, durationSeconds * 1000);
@@ -131,6 +180,46 @@ export function temporarilyRevealRule(
 }
 
 // ─── Internal Helpers ─────────────────────────────────────────────────────────
+
+function applyElementMask(
+  element: HTMLElement,
+  rule: MaskRule,
+  onReveal?: RevealCallback
+): boolean {
+  if (element.getAttribute(HOST_ATTR) === rule.id && element.querySelector(`[${OVERLAY_ATTR}="${rule.id}"]`)) {
+    return true;
+  }
+
+  element.setAttribute(HOST_ATTR, rule.id);
+  element.setAttribute('data-privacy-masked', 'true');
+
+  // Avoid duplicate overlays
+  let overlay = element.querySelector(`.${UI_PREFIX}-element-overlay[${OVERLAY_ATTR}="${rule.id}"]`);
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = `${UI_PREFIX}-element-overlay`;
+    overlay.setAttribute(OVERLAY_ATTR, rule.id);
+    overlay.textContent = rule.maskText || '████';
+
+    if (onReveal) {
+      const revealBtn = document.createElement('button');
+      revealBtn.className = `${UI_PREFIX}-reveal-btn-inline`;
+      revealBtn.type = 'button';
+      revealBtn.title = 'Reveal temporarily';
+      revealBtn.textContent = '👁';
+      revealBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onReveal(rule.id);
+      });
+      overlay.appendChild(revealBtn);
+    }
+
+    element.appendChild(overlay);
+  }
+
+  return true;
+}
 
 function maskTextNodes(
   element: HTMLElement,

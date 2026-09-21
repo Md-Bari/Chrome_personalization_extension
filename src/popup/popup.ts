@@ -2,7 +2,7 @@
  * Privacy Mask - Popup
  */
 
-const STORAGE_KEY = 'privacy_mask_rules_v2';
+const STORAGE_KEY = 'privacy_mask_rules_v3';
 
 interface PMRule {
   id: string;
